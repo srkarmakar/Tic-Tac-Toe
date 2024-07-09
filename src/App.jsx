@@ -1,12 +1,22 @@
 import { Fragment, useState } from "react"
 import Player from "./component/Player"
 import GameBoard from "./component/GameBoard"
+import Log from "./component/Log";
 
 function App() {
   const [activePlayer, setActivePlayer] = useState('X');
+  const [gameTurns, setGameTurns] = useState([]);
 
   function handleSelectedSqure() {
     setActivePlayer((currentPlayer) => currentPlayer === "X" ? "O" : "X");
+    setGameTurns(prevTurns => {
+      let currPlayer = 'X';
+      if (prevTurns.length > 0 && prevTurns[0] == 'X') {
+        currPlayer = 'O';
+      }
+      const updatedTurns = [
+        { square: { row: rowIndex, col: colIndex }, player: currPlayer }, ...prevTurns]
+    })
   }
   return (
     <Fragment>
@@ -17,7 +27,7 @@ function App() {
         </ol>
         <GameBoard onSelectSquare={handleSelectedSqure} activePlayerSymbol={activePlayer} />
       </div>
-      LOG
+      <Log />
     </Fragment>
   )
 }
